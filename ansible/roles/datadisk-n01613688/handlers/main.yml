@@ -1,0 +1,3 @@
+# roles/datadisk-HumberID/handlers/main.yml
+- name: reload partition table
+  ansible.builtin.command: partprobe /dev/sdc

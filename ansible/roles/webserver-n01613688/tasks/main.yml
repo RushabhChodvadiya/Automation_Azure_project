@@ -1,0 +1,32 @@
+- name: Install httpd web server
+  ansible.builtin.package:
+    name: httpd
+    state: present
+
+- name: Create files containing FQDN
+  ansible.builtin.copy:
+    content: "{{ ansible_fqdn }}"
+    dest: "{{ item }}"
+  loop:
+    - /vm1.html
+    - /vm2.html
+    - /vm3.html
+
+- name: Copy files to httpd root directory
+  ansible.builtin.copy:
+    src: "{{ item }}"
+    dest: /var/www/html/index.html
+    owner: root
+    group: root
+    mode: '0444'
+    remote_src: yes
+  loop:
+    - /vm1.html
+    - /vm2.html
+    - /vm3.html
+
+- name: Ensure httpd service is started and enabled
+  ansible.builtin.service:
+    name: httpd
+    state: started
+    enabled: yes

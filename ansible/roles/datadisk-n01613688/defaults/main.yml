@@ -1,0 +1,8 @@
+disk_device: "/dev/sdc"
+part1_size: "4GB"
+part2_start: "5GB"
+part2_end: "10GB"
+part1_fs: "XFS"
+part2_fs: "EXT4"
+mount_point1: "/part1"
+mount_point2: "/part2"

@@ -1,0 +1,2 @@
+- name: reload profile
+  ansible.builtin.shell: source /etc/profile

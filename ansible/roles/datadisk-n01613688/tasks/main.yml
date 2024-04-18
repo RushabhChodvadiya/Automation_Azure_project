@@ -1,0 +1,58 @@
+- name: Partition disk
+  parted:
+    device: "{{ disk_device }}"
+    number: 1
+    part_start: 1MB
+    part_end: "{{ part1_size }}"
+    fs_type: "{{ part1_fs }}"
+    state: present
+  notify: reload partition table
+
+- name: Partition disk
+  parted:
+    device: "{{ disk_device }}"
+    number: 2
+    part_start: "{{ part2_start }}"
+    part_end: "{{ part2_end }}"
+    fs_type: "{{ part2_fs }}"
+    state: present
+  notify: reload partition table
+
+- name: Unmount disks if mounted
+  mount:
+    path: "{{ item.mount }}"
+    state: unmounted
+  loop:
+    - { mount: "/dev/sdc1" }
+    - { mount: "/dev/sdc2" }
+  ignore_errors: true
+
+- name: Create filesystem on partition 1
+  filesystem:
+    fstype: "xfs"
+    dev: "{{ disk_device }}1"
+
+- name: Create filesystem on partition 2
+  filesystem:
+    fstype: "ext4"
+    dev: "{{ disk_device }}2"
+
+
+- name: Install xfsprogs package
+  package:
+    name: xfsprogs
+    state: present
+
+- name: Mount partition 1
+  mount:
+    path: "/part1"
+    src: "/dev/sdc1"
+    fstype: "xfs"
+    state: mounted
+
+- name: Mount partition 2
+  mount:
+    path: "/part2"
+    src: "/dev/sdc2"
+    fstype: "ext4"
+    state: mounted

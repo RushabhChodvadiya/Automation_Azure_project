@@ -1,0 +1,9 @@
+- name: Append lines to /etc/profile
+  blockinfile:
+    path: /etc/profile
+    block: |
+      # Test block added by Ansible
+      export TMOUT=1500
+    marker: "# {mark} ANSIBLE MANAGED BLOCK {{ ansible_managed }}"
+    create: yes
+  notify: reload profile

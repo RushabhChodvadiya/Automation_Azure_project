@@ -1,0 +1,12 @@
+- name: Run roles on all Linux inventory nodes
+  hosts: all
+  become: yes
+  gather_facts: yes
+  vars:
+    ansible_managed: "Managed by Ansible"
+    ansible_ssh_private_key_file: "~/.ssh/id_rsa"
+  roles:
+    - datadisk-n01613688
+    - profile-n01613688
+    - user-n01613688
+    - webserver-n01613688
